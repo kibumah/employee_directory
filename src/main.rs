@@ -1,11 +1,12 @@
-use std::io;
 use std::collections::HashMap;
+use std::io;
 
 fn main() {
     println!("Welcome to the Employee Directory!\n");
     println!("What would you like to do? Type 'Help' for more info.");
 
-    let help = format!("{}\n{}\n{}\n{}\n",
+    let help = format!(
+        "{}\n{}\n{}\n{}\n",
         "Type 'Add <first name> <last name> to <department>' to add an employee",
         "Type 'List <department>' to list employees of a department",
         "Type 'List all' to list all employees",
@@ -17,9 +18,10 @@ fn main() {
     loop {
         let mut input = String::new();
 
-        io::stdin().read_line(&mut input)
+        io::stdin()
+            .read_line(&mut input)
             .expect("Failed to read line");
-    
+
         match Command::from_input(&input) {
             Some(Command::Add { dept, employee }) => dir.entry(dept).or_default().push(employee),
             Some(Command::ListAll) => {
@@ -42,7 +44,7 @@ fn main() {
                         println!("{} {}", employee.first, employee.last);
                     }
                     println!();
-                },
+                }
                 None => println!("I don't recognize that department!\n"),
             },
             Some(Command::Help) => println!("{}", help),
